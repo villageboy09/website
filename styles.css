@@ -1,0 +1,369 @@
+/* Navbar Styling */
+.navbar {
+    background-color: transparent; /* Transparent background */
+    box-shadow: none; /* No shadow */
+    padding: 10px 20px; /* Padding for navbar */
+}
+
+.navbar-brand {
+    color: #fff; /* Brand text color */
+    font-weight: bold; /* Brand font weight */
+    padding: auto;
+}
+
+.nav-link {
+    position: relative; /* Position relative to position pseudo-elements */
+    color: #fff; /* Link text color */
+    transition: all 0.3s; /* Smooth transition for all properties */
+    padding: 10px 40px; /* Padding for navbar links */
+    font-weight: bold; /* Link font weight */
+    border: 2px solid transparent; /* Initial border */
+    border-radius: 10px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    z-index: 1; /* Ensure the link text is above the pseudo-elements */
+}
+
+.nav-link::before,
+.nav-link::after {
+    content: ''; /* Empty content for pseudo-elements */
+    position: absolute; /* Position absolute within the nav-link */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px; /* Match border-radius of nav-link */
+    transform: skew(-20deg); /* Skew to create parallelogram effect */
+    z-index: -1; /* Place below the link text */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s; /* Smooth transition for opacity */
+    box-sizing: border-box; /* Ensure padding and borders are included in the size */
+}
+
+.nav-link::before {
+    background-color: white; /* White background for top layer */
+    transform: skew(-20deg) translateY(-3px); /* Slight offset for top layer */
+}
+
+.nav-link::after {
+    background-color: lightskyblue; /* Light green background for bottom layer */
+    transform: skew(-20deg) translateY(3px); /* Slight offset for bottom layer */
+}
+
+.nav-link:hover {
+    background-color: transparent; /* Ensure background remains transparent */
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after {
+    opacity: 0.5; /* Show transparent outline on hover */
+}
+
+.nav-link.active {
+    color: #000; /* Change text color when active */
+}
+
+.nav-link.active::before,
+.nav-link.active::after {
+    opacity: 1; /* Show parallelogram effect when active */
+}
+
+/* Toggle Button Styling */
+.navbar-toggler {
+    border-color: #fff; /* Toggle button color */
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3e%3cpath stroke="rgba(255, 255, 255, 0.5)" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22" /%3e%3c/svg%3e'); /* Toggle button icon */
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        background-color: transparent; /* Transparent background for mobile menu */
+    }
+
+    .navbar-nav {
+        margin-top: 10px; /* Space between links in mobile menu */
+       
+    }
+
+    .navbar-nav .nav-link {
+        color: #080000; /* Link text color in mobile menu */
+        width: 100%; /* Full width for mobile menu items */
+        text-align: center; /* Center text alignment */
+        box-sizing: border-box; /* Include padding and border in width */
+    }
+
+    .navbar-toggler {
+        border-color: #fff; /* Toggle button color in mobile menu */
+    }
+}
+
+.whatsapp-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.whatsapp-button img {
+  width: 35px;
+  height: 35px;
+}
+
+  
+  /* Services Section */
+  #services {
+	  padding: 20px;
+  }
+  
+  .card {
+	  margin-bottom: 30px;
+	  border: none;
+	  border-radius: 10px;
+	  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+	  background: linear-gradient(135deg, #ffffff, #65a0ee);
+	  transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+	  transform: translateY(-5px);
+	  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  }
+  .card .card-body {
+	  padding: 20px;
+  }
+  
+  .card-title {
+	  margin-bottom: 20px;
+  }
+  
+  .card-text {
+	  color: #555;
+  }
+  
+  /* Our Work Section */
+  #work {
+	  padding: 20px ;
+  }
+  
+  .carousel-item img {
+	  border-radius: 10px;
+	  width: 100%; /* Ensure images fill the carousel */
+	  height: 350px; 
+	  
+  }
+  
+  /* Contact Us Section */
+  #contact {
+	  padding: 20px 0;
+  }
+  
+  .contact-container {
+	  text-align: center;
+	  margin-top: 70px; /* Adjust the top position as needed */
+  }
+  
+  #contact .chip {
+	  margin: 0 auto;
+	  display: table;
+  }
+  
+  .contact-container form {
+	  max-width: 400px; /* Adjusted max-width */
+	  margin: 0 auto;
+	  padding: 15px; /* Added padding */
+  }
+  
+  .contact-container input,
+  .contact-container textarea {
+	  width: 100%;
+	  padding: 8px; /* Reduced padding */
+	  margin-bottom: 12px; /* Reduced margin-bottom */
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+  }
+  
+  .contact-container input[type="submit"] {
+	  background-color: #3d3dc7;
+	  color: #fff;
+	  border: none;
+	  cursor: pointer;
+  }
+  
+  .contact-container input[type="submit"]:hover {
+	  background-color: #101113;
+  }
+  
+  
+  .card {
+	  border-radius: 10px;
+	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  } 
+  
+  
+
+  @media (max-width: 576px) {
+	  .navbar-brand img {
+		  max-height: 20px;
+	  }
+  }
+  h2 {
+	  text-align: center;
+  }
+  #about {
+	  text-align: center;
+  }
+  #services {
+	  text-align: center;
+  }
+  #work {
+	  text-align: center;
+  }
+  #sponsor {
+	text-align: center;
+  }
+  #contact {
+	background-color: transparent;
+  }
+  
+  body {
+   background: linear-gradient(120deg, rgba(255, 255, 255, 0.5), rgba(154, 205, 50, 0.5)); /* Semi-transparent linear gradient */	font-family: Poppins;
+	  font-size: medium;
+  }
+  .chip {
+	  display: inline-block;
+	  padding: 0.4em 0.6em;
+	  font-size: 1em;
+	  font-weight: bold;
+	  line-height: 1.6;
+	  color: #131212;
+	  background-color: #bff56a;
+	  border-radius: 0.25rem;
+	}
+	
+	/* Custom CSS for social media icons */
+	.social-icons a {
+	  font-size: 30px; /* Adjust the size as needed */
+	  margin: 0 10px; /* Add margin between icons */
+	  color: #333; /* Default color */
+	  transition: transform 0.3s ease-out; /* Add transition effect */
+  }
+  /* Contact Form Styles */
+  .container.contact-section {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px;
+  }
+  
+  .cards {
+	background-color: transparent;
+	padding: 20px;
+	border-radius: 10px;
+  }
+  
+  .chip {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 10px;
+	display: inline-block;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  textarea {
+	width: 100%;
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+  }
+  
+  
+  input[type="submit"] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+	background-color: #45a049;
+  }
+  
+  .success-message {
+	margin-top: 10px;
+	text-align: center;
+  }
+  
+  #sponsor .logo {
+	  display: inline-block; /* Set display to inline-block */
+	  height: 100px; /* Set height to 100px */
+	  margin-right: 30px; /* Set right padding to 30px */
+	  background-color: transparent; /* Set background to transparent */
+  }
+  
+  #floating-banner {
+	display: none; /* Initially hidden */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  background: linear-gradient(to bottom, #a7e9af, #bee1f4); /* Light green to light blue gradient */
+	color: #721c24;
+	padding: 20px 10px; /* Adjusted padding */
+	border: 1px solid #f5c6cb;
+	border-radius: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	text-align: center;
+	width: calc(100% - 40px); /* Updated to ensure space between edges */
+	max-width: 500px; /* Optional: max-width for larger screens */
+  }
+  
+  
+  #banner-image {
+	width: 100%;
+	height: auto;
+	border-radius: 5px;
+	margin-bottom: 10px;
+  }
+  
+  #apply-button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 3px;
+	display: block;
+	margin: 0 auto;
+  }
+  
+  #apply-button:hover {
+	background-color: #0056b3;
+  }
+  
+  #close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 30px;
+	cursor: pointer;
+  }
+  
