@@ -1,0 +1,125 @@
+
+<!-- card.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Visiting Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/3b70c1e7a7.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #card-container {
+            width: 350px;
+            background-color: #001f3f;
+            color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        #card-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, #0066cc, transparent 70%);
+            opacity: 0.7;
+            z-index: 0;
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        .card-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .card-job-title {
+            font-size: 16px;
+            font-weight: 400;
+            color: #99ccff;
+            margin-bottom: 15px;
+        }
+        .card-details {
+            font-size: 14px;
+        }
+        .card-details i {
+            color: #66b3ff;
+            width: 20px;
+            text-align: center;
+            margin-right: 5px;
+        }
+        #download-btn {
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            margin-top: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        #download-btn:hover {
+            background-color: #004c99;
+        }
+    </style>
+</head>
+<body>
+    <div id="card-container">
+        <div class="card-content">
+            <div class="card-name"></div>
+            <div class="card-job-title"></div>
+            <div class="card-details"></div>
+        </div>
+    </div>
+    <button id="download-btn">Download Visiting Card</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardData = JSON.parse(decodeURIComponent(window.location.hash.slice(1)));
+            const cardContent = document.querySelector('.card-content');
+            
+            cardContent.innerHTML = `
+                <div class="card-name">${cardData.name}</div>
+                <div class="card-job-title">${cardData.jobTitle}</div>
+                <div class="card-details">
+                    <p><i class="fas fa-building"></i> ${cardData.company}</p>
+                    <p><i class="fas fa-envelope"></i> ${cardData.email}</p>
+                    <p><i class="fas fa-phone"></i> ${cardData.phone}</p>
+                    ${cardData.website ? `<p><i class="fas fa-globe"></i> ${cardData.website}</p>` : ''}
+                    ${cardData.address ? `<p><i class="fas fa-map-marker-alt"></i> ${cardData.address}</p>` : ''}
+                </div>
+            `;
+
+            document.getElementById('download-btn').addEventListener('click', () => {
+                html2canvas(document.getElementById('card-container')).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'digital_visiting_card.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

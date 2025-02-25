@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced WhatsApp-style Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 360px;
+            height: 640px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #075e54;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .chat-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-image: url('https://i.pinimg.com/originals/97/c0/07/97c00759d90d786d9b6096d274ad3e07.png');
+            background-size: cover;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot-message .message-content {
+            background-color: #ffffff;
+            margin-left: 10px;
+            border-top-left-radius: 0;
+        }
+
+        .user-message .message-content {
+            background-color: #dcf8c6;
+            margin-right: 10px;
+            border-top-right-radius: 0;
+            margin-left: auto;
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background-color: #ffffff;
+            border-radius: 18px;
+            margin-left: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #93918f;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 15px;
+            background-color: #f0f0f0;
+            align-items: center;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            margin-right: 10px;
+            background-color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-footer input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #25d366;
+        }
+
+        .chat-footer button {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-footer button:hover {
+            background-color: #128c7e;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #7e7e7e;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .emoji-picker {
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #7e7e7e;
+        }
+
+        .attachment {
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #7e7e7e;
+        }
+         .support-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .support-chip {
+            background-color: #25d366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .support-chip:hover {
+            background-color: #128c7e;
+        }
+    </style>
+</head>
+<body>
+     <div class="chat-container">
+        <div class="chat-header">
+            <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Bot Avatar" class="chat-icon">
+            <div class="chat-title">Support Bot</div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="message bot-message">
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Bot Avatar" class="message-avatar">
+                <div class="message-content">
+                    👋 Hi! Welcome to our support chat. To get started, may I know your name?
+                    <div class="timestamp">12:00 PM</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <div class="emoji-picker">😊</div>
+            <div class="attachment"><i class="fas fa-paperclip"></i></div>
+            <input type="text" id="userInput" placeholder="Type a message">
+            <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let conversationState = 'askName';
+        let userName = '';
+        let userEmail = '';
+        let selectedCategory = '';
+        let userQuery = '';
+
+        $('#sendBtn').on('click', sendMessage);
+        $('#userInput').on('keypress', function(e) {
+            if (e.which == 13) {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const userInput = $('#userInput');
+            const chatBody = $('#chatBody');
+
+            if (userInput.val().trim() !== '') {
+                appendMessage('user', userInput.val());
+
+                // Show typing indicator
+                showTypingIndicator();
+
+                // Generate bot response based on conversation state
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    let botResponse = '';
+
+                    switch (conversationState) {
+                        case 'askName':
+                            userName = userInput.val().trim();
+                            botResponse = `Nice to meet you, ${userName}! Could you please provide your email address?`;
+                            conversationState = 'askEmail';
+                            break;
+                        case 'askEmail':
+                            userEmail = userInput.val().trim();
+                            botResponse = `Thank you, ${userName}. I've registered your email as ${userEmail}. How can I help you today? Please select a category:`;
+                            conversationState = 'selectCategory';
+                            appendMessage('bot', botResponse);
+                            showSupportCategories();
+                            userInput.val('');
+                            return;
+                        case 'explainProblem':
+                            userQuery = userInput.val().trim();
+                            botResponse = `Thank you for explaining your issue. Our support team will review your problem and get back to you at ${userEmail} as soon as possible. Is there anything else I can help you with?`;
+                            conversationState = 'endChat';
+                            break;
+                        case 'endChat':
+                            botResponse = "Thank you for using our support chat. Your query has been recorded. Have a great day!";
+                            sendToDatabase();
+                            break;
+                    }
+
+                    appendMessage('bot', botResponse);
+
+                    if (conversationState === 'endChat') {
+                        $('#userInput').prop('disabled', true);
+                        $('#sendBtn').prop('disabled', true);
+                    }
+                }, 1500);
+
+                // Clear input field
+                userInput.val('');
+            }
+        }
+
+        function appendMessage(sender, message) {
+            const chatBody = $('#chatBody');
+            const messageDiv = $('<div>').addClass('message').addClass(sender + '-message');
+            const avatar = $('<img>').attr('src', sender === 'bot' ? 'https://randomuser.me/api/portraits/men/41.jpg' : 'https://randomuser.me/api/portraits/women/65.jpg').addClass('message-avatar');
+            const content = $('<div>').addClass('message-content').html(message);
+            const timestamp = $('<div>').addClass('timestamp').text(getCurrentTime());
+
+            content.append(timestamp);
+
+            if (sender === 'user') {
+                messageDiv.append(content);
+            } else {
+                messageDiv.append(avatar).append(content);
+            }
+
+            chatBody.append(messageDiv);
+            chatBody.scrollTop(chatBody[0].scrollHeight);
+        }
+
+        function showSupportCategories() {
+            const categories = ['Technical Issue', 'Billing Question', 'Account Management', 'Feature Request'];
+            const chipsContainer = $('<div>').addClass('support-chips');
+
+            categories.forEach(category => {
+                const chip = $('<div>').addClass('support-chip').text(category);
+                chip.on('click', function() {
+                    appendMessage('user', category);
+                    selectedCategory = category;
+                    conversationState = 'explainProblem';
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        appendMessage('bot', `You've selected "${category}". Can you please explain your problem in detail?`);
+                    }, 1000);
+                });
+                chipsContainer.append(chip);
+            });
+
+            $('#chatBody').append(chipsContainer);
+            $('#chatBody').scrollTop($('#chatBody')[0].scrollHeight);
+        }
+
+        function showTypingIndicator() {
+            const chatBody = $('#chatBody');
+            const typingIndicator = $('<div>').addClass('typing-indicator')
+                .append($('<span>'))
+                .append($('<span>'))
+                .append($('<span>'));
+            chatBody.append(typingIndicator);
+            chatBody.scrollTop(chatBody[0].scrollHeight);
+        }
+
+        function hideTypingIndicator() {
+            $('.typing-indicator').remove();
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function sendToDatabase() {
+            const chatData = {
+                name: userName,
+                email: userEmail,
+                category: selectedCategory,
+                query: userQuery
+            };
+
+            $.ajax({
+                url: 'save_chat_data.php',
+                method: 'POST',
+                data: chatData,
+                success: function(response) {
+                    console.log('Chat data saved to database');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error saving chat data:', error);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

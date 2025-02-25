@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Certificate Upload</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .btn-custom {
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: #45a049;
+        }
+
+        .status {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .file-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bulk Certificate Upload</h1>
+        <div class="upload-section">
+            <input type="file" id="csvFile" accept=".csv" class="file-input">
+            <button onclick="uploadCertificates()" class="btn btn-custom mt-3">Upload Certificates</button>
+            <div id="status" class="status"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAEm51DB5Cu0DRmswi0Q1MQPztu-dRCl4",
+            authDomain: "cropsync-web.firebaseapp.com",
+            projectId: "cropsync-web",
+            storageBucket: "cropsync-web",
+            messagingSenderId: "74605478928",
+            appId: "1:74605478928:web:eaa6773cf7ae2d5ec7f695",
+            measurementId: "G-RS130D4LHV"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        function uploadCertificates() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const csv = e.target.result;
+                    const certificates = parseCSV(csv);
+                    bulkUpload(certificates);
+                };
+                reader.readAsText(file);
+            } else {
+                updateStatus('No file selected');
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const certificates = [];
+
+            for (let i = 1; i < lines.length; i++) { // Assuming first line is header
+                const [name, unique_id, course] = lines[i].split(',');
+                if (name && unique_id && course) {
+                    certificates.push({
+                        name: name.trim(),
+                        unique_id: unique_id.trim(),
+                        course: course.trim()
+                    });
+                }
+            }
+
+            return certificates;
+        }
+
+        async function bulkUpload(certificates) {
+            updateStatus('Starting upload...');
+            const batch = db.batch();
+
+            certificates.forEach((cert) => {
+                const docRef = db.collection('certificate_database').doc();
+                batch.set(docRef, cert);
+            });
+
+            try {
+                await batch.commit();
+                updateStatus(`Successfully uploaded ${certificates.length} certificates`);
+            } catch (error) {
+                console.error('Error uploading certificates:', error);
+                updateStatus('Error uploading certificates');
+            }
+        }
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+    </script>
+</body>
+
+</html>
